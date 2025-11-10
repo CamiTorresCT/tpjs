@@ -1,68 +1,66 @@
-// GESTIÓN DE PEDIDOS - KIOSCO
+// Carrito de Compras - Kiosco
 
-// Variables y tipos de datos
-let nombreCliente = "Camila";          // string
-let dineroDisponible = 1500;           // number
-let pedidoActivo = true;               // boolean
-let descuentoAplicado = null;          // null
+// VARIABLES (string, number, boolean, null)
+let cliente = "Camila";       // string
+let dinero = 2000;            // number
+let compraActiva = true;      // boolean
+let descuento = null;         // null
 
-// Objeto literal principal
+// OBJETO LITERAL con método y uso de this
 const kiosco = {
     nombre: "Kiosco Las Delicias",
     direccion: "Av. Siempre Viva 123",
-    productos: [
-        { nombre: "Gaseosa", precio: 800 },
-        { nombre: "Alfajor", precio: 500 },
-        { nombre: "Chicle", precio: 200 }
-    ],
-    mostrarInfo() {
-        console.log(`Bienvenido/a al ${this.nombre}, ubicado en ${this.direccion}`);
+    mostrarInfo: function() {
+        console.log(`Bienvenida al ${this.nombre} ubicado en ${this.direccion}`);
     }
 };
 
-// Mostrar información del kiosco
+// Muestra la información del kiosco
 kiosco.mostrarInfo();
 
-// Array relacionado y recorrido con forEach()
-console.log("\n--- Productos disponibles ---");
-kiosco.productos.forEach((producto, i) => {
-    console.log(`${i + 1}. ${producto.nombre} - $${producto.precio}`);
-});
+// ARRAY y recorrido con forEach()
+const productos = [
+    { nombre: "Gaseosa", precio: 800 },
+    { nombre: "Alfajor", precio: 500 },
+    { nombre: "Galletitas", precio: 700 }
+];
 
-// Función tradicional con parámetros y return
+console.log("\nProductos disponibles:");
+productos.forEach((p, i) => console.log(`${i + 1}. ${p.nombre} - $${p.precio}`));
+
+// FUNCIONES
+// Función tradicional
 function calcularTotal(pedidos) {
     let total = 0;
-    pedidos.forEach(item => total += item.precio);
+    pedidos.forEach(p => total += p.precio);
     return total;
 }
 
 // Función flecha con retorno implícito
 const aplicarDescuento = total => total * 0.9;
 
-// Simulamos una compra
-let pedidoCliente = [kiosco.productos[0], kiosco.productos[1]]; // Gaseosa + Alfajor
-let totalCompra = calcularTotal(pedidoCliente);
+// Simulamos la compra de 2 productos
+let pedido = [productos[0], productos[1]];
+let total = calcularTotal(pedido);
+console.log(`\nTotal sin descuento: $${total}`);
 
-console.log(`\nTotal sin descuento: $${totalCompra}`);
-
-// Control de flujo: if / else y operador ternario
-if (pedidoCliente.length >= 2) {
-    descuentoAplicado = true;
-    totalCompra = aplicarDescuento(totalCompra);
+// CONTROL DE FLUJO - if/else
+if (pedido.length >= 2) {
+    descuento = true;
+    total = aplicarDescuento(total);
     console.log("Descuento aplicado del 10%");
 } else {
-    descuentoAplicado = false;
-    console.log("No aplica descuento");
+    descuento = false;
+    console.log("No hay descuento");
 }
+console.log(`Total final: $${total}`);
 
-console.log(`Total final: $${totalCompra}`);
-
-// Control de flujo: switch
+// CONTROL DE FLUJO - switch
 let metodoPago = "efectivo";
 switch (metodoPago) {
     case "tarjeta":
-        console.log("Pagará con tarjeta (recargo 5%)");
-        totalCompra *= 1.05;
+        console.log("Pagará con tarjeta (+5% recargo)");
+        total *= 1.05;
         break;
     case "efectivo":
     case "transferencia":
@@ -72,23 +70,20 @@ switch (metodoPago) {
         console.log("Método de pago no reconocido.");
 }
 
-// do...while: simulación de intento de pago
-let intento = 0;
+// CONTROL DE FLUJO - do...while
 do {
-    intento++;
-    console.log(`Intento de pago nº ${intento}...`);
-    if (dineroDisponible >= totalCompra) {
-        console.log(`Pago exitoso. ¡Gracias por su compra, ${nombreCliente}!`);
-        pedidoActivo = false;
+    if (dinero >= total) {
+        console.log(`Pago exitoso. ¡Gracias por su compra, ${cliente}!`);
+        compraActiva = false;
     } else {
-        console.log("Saldo insuficiente. Intente nuevamente.");
-        dineroDisponible += 500; // El cliente agrega dinero
+        console.log("Saldo insuficiente. Agregando dinero...");
+        dinero += 500;
     }
-} while (pedidoActivo);
+} while (compraActiva);
 
-// Ejemplo opcional de bind()
-function despedirCliente() {
+// OPCIONAL - bind()
+function despedir() {
     console.log(`Gracias por visitar ${this.nombre}. ¡Vuelva pronto!`);
 }
-const despedida = despedirCliente.bind(kiosco);
+const despedida = despedir.bind(kiosco);
 despedida();
